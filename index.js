@@ -17,10 +17,11 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // database and collection code goes here
-    const db = client.db("sample_restaurants");
-    const coll = db.collection("restaurants");
-    // find code goes here
-    const cursor = coll.find({ cuisine: "American" });
+    const coll = client.db("sample_guides").collection("planets");
+    // find code using AND < 15 and >-100
+    const cursor = coll.find({
+      $and: [{ orderFromSun: { $gt: 2 } }, { orderFromSun: { $lt: 5 } }],
+    });
     // iterate code goes here
     await cursor.forEach(console.log);
 
