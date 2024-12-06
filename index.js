@@ -2,7 +2,7 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
 require('dotenv').config();
 
-const uri=process.env.MONGOURI;
+const uri = process.env.MONGOURI;
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -18,17 +18,16 @@ async function run() {
     await client.connect();
     // database and collection code goes here
     const coll = client.db("sample_guides").collection("comets");
-   // update code goes here
-    const filter = {};
-    const updateDoc = {
-      $mul: {
-        radius: 1.60934,
-      },
+    // filter to delete
+    const doc = {
+      orbitalPeriod: {
+        $gt: 5,
+        $lt: 85
+      }
     };
-    const result = await coll.updateMany(filter, updateDoc);
-    // display the results of your operation
-    console.log("Number of documents updated: " + result.modifiedCount);
-
+    const result = await coll.deleteMany(doc);
+    // amount deleted code 
+    console.log("Number of documents deleted: " + result.deletedCount);
 
   } finally {
     // Ensures that the client will close when you finish/error
